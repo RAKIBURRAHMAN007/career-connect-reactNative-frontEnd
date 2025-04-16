@@ -19,7 +19,7 @@ const WelcomeScreen = () => {
 
       <Text style={styles.description}>
         Start your journey with us — whether you're an HR professional looking
-        to discover top talent or an employee aiming to land your dream role.
+        to discover top talent or an job seeker aiming to land your dream role.
         Choose your path below and let's get started!
       </Text>
 
@@ -65,6 +65,7 @@ const styles = StyleSheet.create({
   },
   subtitle: {
     fontSize: 18,
+    fontWeight: "medium",
     color: "#333",
     marginBottom: 10,
     textAlign: "center",
@@ -75,7 +76,7 @@ const styles = StyleSheet.create({
     marginBottom: 40,
     fontWeight: "bold",
     textAlign: "center",
-    paddingHorizontal: 30,
+    paddingHorizontal: 20,
   },
   buttonContainer: {
     width: "100%",
