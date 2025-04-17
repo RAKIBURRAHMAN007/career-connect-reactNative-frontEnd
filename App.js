@@ -1,20 +1,32 @@
-import { NavigationContainer, useNavigation } from "@react-navigation/native";
+import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { StatusBar } from "expo-status-bar";
-import React from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import WelcomeScreen from "./screens/WelcomeScreen";
 import HrLogin from "./components/HrLogin";
 import SeekerLogin from "./components/SeekerLogin";
 import HrRegister from "./components/HrRegister";
 import SeekerRegister from "./components/SeekerRegister";
+import AuthProvider, { AuthContext } from "./Auth/AuthProvider";
+import MainScreenPage from "./screens/MainScreenPage";
 
 const Stack = createNativeStackNavigator();
-export default function App() {
+
+const AppContent = () => {
+  const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
+  const { user } = useContext(AuthContext);
+
+  useEffect(() => {
+    if (user) {
+      setIsUserLoggedIn(true);
+    }
+  }, [user]);
+
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="welcome"
+        initialRouteName={isUserLoggedIn ? "mainScreen" : "welcome"}
         screenOptions={{ headerShown: false }}
       >
         <Stack.Screen name="welcome" component={WelcomeScreen}></Stack.Screen>
@@ -25,8 +37,20 @@ export default function App() {
           name="seekerRegister"
           component={SeekerRegister}
         ></Stack.Screen>
+        <Stack.Screen
+          name="mainScreen"
+          component={MainScreenPage}
+        ></Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>
+  );
+};
+
+export default function App() {
+  return (
+    <AuthProvider>
+      <AppContent />
+    </AuthProvider>
   );
 }
 
