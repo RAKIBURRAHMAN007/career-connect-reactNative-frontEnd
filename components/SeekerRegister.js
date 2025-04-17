@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import {
+  Alert,
   StyleSheet,
   Text,
   TextInput,
@@ -9,16 +10,74 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import LottieView from "lottie-react-native";
 import anim from "../src/animation/Animation - 1744873309025.json";
-const SeekerRegister = () => {
+import { auth, AuthContext } from "../Auth/AuthProvider";
+import { sendEmailVerification, updateProfile } from "firebase/auth";
+const seekerRegister = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
   const navigation = useNavigation();
-
+  const { createNewUser, setUser } = useContext(AuthContext);
   const handleRegister = () => {
-    console.log("Logged in as HR");
+    const passRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d).{6,}$/;
+
+    const emailRegex = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/;
+    if (name.length === 0 || email.length === 0 || password.length === 0) {
+      Alert.alert("All fields are required");
+      return;
+    }
+    if (!emailRegex.test(email)) {
+      Alert.alert(
+        "Invalid Email",
+        "Please enter a valid email address.\nExample: example@gmail.com"
+      );
+      return;
+    }
+    if (!passRegex.test(password)) {
+      Alert.alert(
+        "Weak Password",
+        "Your password must:\n" +
+          "• Be at least 6 characters long\n" +
+          "• Include at least 1 uppercase letter\n" +
+          "• Include at least 1 lowercase letter\n" +
+          "• Include at least 1 number"
+      );
+
+      return;
+    }
+    createNewUser(email, password)
+      .then((result) => {
+        const registeredUser = result.user;
+        const profile = {
+          displayName: name,
+        };
+        updateProfile(auth.currentUser, profile).then(() => {
+          setUser({
+            ...registeredUser,
+            displayName: name,
+          });
+          sendEmailVerification(registeredUser)
+            .then(() => {
+              // Notify user that they need to verify their email
+              Alert.alert(
+                "Registration Successful",
+                "A verification email has been sent to your email address."
+              );
+              navigation.navigate("seekerLogin");
+            })
+            .catch((error) => {
+              Alert.alert(
+                "Error",
+                "Failed to send verification email. Please try again."
+              );
+            });
+        });
+      })
+      .catch((error) => {
+        Alert.alert("Error", error.message);
+      });
   };
 
   return (
@@ -179,4 +238,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SeekerRegister;
+export default seekerRegister;

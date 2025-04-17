@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import {
+  Alert,
   StyleSheet,
   Text,
   TextInput,
@@ -9,15 +10,57 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import LottieView from "lottie-react-native";
 import anim from "../src/animation/Animation - 1744827972100.json";
+import { auth, AuthContext } from "../Auth/AuthProvider";
+import { sendPasswordResetEmail, signOut } from "firebase/auth";
+
 const SeekerLogin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
   const navigation = useNavigation();
-
+  const { userLogin, setUser, googleSignIn } = useContext(AuthContext);
   const handleLogin = () => {
-    console.log("Logged in as HR");
+    if (email.length === 0 || password.length === 0) {
+      Alert.alert("All fields are required");
+      return;
+    }
+    userLogin(email, password)
+      .then((result) => {
+        const user = result.user;
+        if (user.emailVerified) {
+          setUser(user);
+          Alert.alert("Login Successful!");
+          navigation.navigate("mainScreen");
+        } else {
+          Alert.alert(
+            "Email Not Verified",
+            "Please verify your email before logging in."
+          );
+          signOut(auth);
+        }
+      })
+      .catch((error) => {
+        Alert.alert("Login Error", error.message);
+      });
+  };
+  const handleForgotPassword = () => {
+    if (!email) {
+      Alert.alert("Please enter your email address first.");
+      return;
+    }
+
+    sendPasswordResetEmail(auth, email)
+      .then(() => {
+        Alert.alert(
+          "Password Reset Email Sent",
+          "Check your inbox to reset your password."
+        );
+      })
+      .catch((error) => {
+        console.error("Password reset error:", error);
+        Alert.alert("Error", error.message);
+      });
   };
 
   return (
@@ -66,7 +109,9 @@ const SeekerLogin = () => {
       <TouchableOpacity onPress={handleLogin} style={styles.loginButton}>
         <Text style={styles.buttonText}>Login</Text>
       </TouchableOpacity>
-
+      <TouchableOpacity onPress={() => handleForgotPassword()}>
+        <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
+      </TouchableOpacity>
       <View style={styles.registerContainer}>
         <Text style={styles.registerText}>New to Career Connect?</Text>
         <TouchableOpacity onPress={() => navigation.navigate("seekerRegister")}>
@@ -169,6 +214,12 @@ const styles = StyleSheet.create({
     color: "#9475d6",
     fontWeight: "bold",
     marginLeft: 5,
+  },
+  forgotPasswordText: {
+    color: "#9475d6",
+    textAlign: "right",
+    marginBottom: 20,
+    fontWeight: "500",
   },
 });
 
