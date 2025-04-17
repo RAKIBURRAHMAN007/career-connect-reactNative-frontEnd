@@ -12,7 +12,7 @@ import LottieView from "lottie-react-native";
 import anim from "../src/animation/Animation - 1744873309025.json";
 import { auth, AuthContext } from "../Auth/AuthProvider";
 import { sendEmailVerification, updateProfile } from "firebase/auth";
-const seekerRegister = () => {
+const SeekerRegister = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
@@ -238,4 +238,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default seekerRegister;
+export default SeekerRegister;
