@@ -8,15 +8,16 @@ import {
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import LottieView from "lottie-react-native";
-import anim from "../src/animation/Animation - 1744827972100.json";
-const HrLogin = () => {
+import anim from "../src/animation/Animation - 1744873309025.json";
+const SeekerRegister = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
   const navigation = useNavigation();
 
-  const handleLogin = () => {
+  const handleRegister = () => {
     console.log("Logged in as HR");
   };
 
@@ -30,12 +31,18 @@ const HrLogin = () => {
           source={anim}
         ></LottieView>
       </View>
-      <Text style={styles.title}>HR Login </Text>
+      <Text style={styles.title}>Job Seeker Register </Text>
       <Text style={styles.subtitle}>
-        Welcome back! Please log in to your account.
+        create your Job Seeker account to get started.
       </Text>
 
       <View style={styles.inputContainer}>
+        <TextInput
+          style={styles.input}
+          placeholder="Name"
+          value={name}
+          onChangeText={setName}
+        />
         <TextInput
           style={styles.input}
           placeholder="Email"
@@ -63,14 +70,14 @@ const HrLogin = () => {
         </View>
       </View>
 
-      <TouchableOpacity onPress={handleLogin} style={styles.loginButton}>
-        <Text style={styles.buttonText}>Login</Text>
+      <TouchableOpacity onPress={handleRegister} style={styles.loginButton}>
+        <Text style={styles.buttonText}>Register</Text>
       </TouchableOpacity>
 
-      <View style={styles.registerContainer}>
-        <Text style={styles.registerText}>New to Career Connect?</Text>
-        <TouchableOpacity onPress={() => navigation.navigate("hrRegister")}>
-          <Text style={styles.registerNow}>Register Now</Text>
+      <View style={styles.loginContainer}>
+        <Text style={styles.loginText}>Already Have Account?</Text>
+        <TouchableOpacity onPress={() => navigation.navigate("seekerLogin")}>
+          <Text style={styles.loginNow}>Login Now</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -86,27 +93,27 @@ const styles = StyleSheet.create({
     backgroundColor: "#F7F9FC",
   },
   animationContainer: {
-    marginBottom: 3,
+    marginBottom: 1,
   },
   animation: {
-    width: 260,
-    height: 200,
+    width: 300,
+    height: 220,
   },
   title: {
     fontSize: 28,
     fontWeight: "bold",
     color: "#9475d6",
-    marginBottom: 20,
+    marginBottom: 12,
   },
   subtitle: {
     fontSize: 16,
     color: "#333",
     textAlign: "center",
-    marginBottom: 30,
+    marginBottom: 20,
   },
   inputContainer: {
     width: "100%",
-    marginBottom: 20,
+    marginBottom: 12,
   },
   input: {
     height: 50,
@@ -156,15 +163,15 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "600",
   },
-  registerContainer: {
+  loginContainer: {
     flexDirection: "row",
     alignItems: "center",
   },
-  registerText: {
+  loginText: {
     fontSize: 14,
     color: "#666",
   },
-  registerNow: {
+  loginNow: {
     fontSize: 14,
     color: "#9475d6",
     fontWeight: "bold",
@@ -172,4 +179,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default HrLogin;
+export default SeekerRegister;

@@ -6,6 +6,8 @@ import { StyleSheet, Text, View } from "react-native";
 import WelcomeScreen from "./screens/WelcomeScreen";
 import HrLogin from "./components/HrLogin";
 import SeekerLogin from "./components/SeekerLogin";
+import HrRegister from "./components/HrRegister";
+import SeekerRegister from "./components/SeekerRegister";
 
 const Stack = createNativeStackNavigator();
 export default function App() {
@@ -18,6 +20,11 @@ export default function App() {
         <Stack.Screen name="welcome" component={WelcomeScreen}></Stack.Screen>
         <Stack.Screen name="hrLogin" component={HrLogin}></Stack.Screen>
         <Stack.Screen name="seekerLogin" component={SeekerLogin}></Stack.Screen>
+        <Stack.Screen name="hrRegister" component={HrRegister}></Stack.Screen>
+        <Stack.Screen
+          name="seekerRegister"
+          component={SeekerRegister}
+        ></Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>
   );
