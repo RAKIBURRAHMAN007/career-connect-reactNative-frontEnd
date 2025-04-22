@@ -1,51 +1,88 @@
-import React, { useContext } from "react";
-import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
-import { AuthContext } from "../Auth/AuthProvider";
-import { useNavigation } from "@react-navigation/native"; // Import useNavigation
+import React from "react";
+import { createDrawerNavigator } from "@react-navigation/drawer";
+import { Ionicons } from "@expo/vector-icons"; // for icons
+import { View, Text, StyleSheet } from "react-native";
+
+// Temporary placeholder components for the screens
+const Dashboard = () => (
+  <View style={styles.screenContainer}>
+    <Text style={styles.screenText}>Dashboard</Text>
+  </View>
+);
+
+const Profile = () => (
+  <View style={styles.screenContainer}>
+    <Text style={styles.screenText}>Profile</Text>
+  </View>
+);
+
+const Settings = () => (
+  <View style={styles.screenContainer}>
+    <Text style={styles.screenText}>Settings</Text>
+  </View>
+);
+
+const Drawer = createDrawerNavigator();
 
 const MainScreenPage = () => {
-  const { logOut } = useContext(AuthContext);
-  const navigation = useNavigation(); // Initialize navigation
-
-  const handleLogout = () => {
-    logOut(); // Log out the user
-    navigation.navigate("welcome"); // Navigate to the welcome screen
-  };
-
   return (
-    <View style={styles.container}>
-      <Text style={styles.textt}>Main page on process</Text>
-
-      {/* TouchableOpacity for Logout */}
-      <TouchableOpacity onPress={handleLogout} style={styles.logoutButton}>
-        <Text style={styles.logoutText}>Logout</Text>
-      </TouchableOpacity>
-    </View>
+    <Drawer.Navigator
+      initialRouteName="Dashboard"
+      screenOptions={{
+        headerStyle: {
+          backgroundColor: "#9475d6",
+        },
+        headerTintColor: "#fff",
+        drawerActiveBackgroundColor: "#9475d6",
+        drawerActiveTintColor: "#fff",
+        drawerInactiveTintColor: "#555",
+        drawerLabelStyle: {
+          fontSize: 16,
+          marginLeft: -10,
+        },
+      }}
+    >
+      <Drawer.Screen
+        name="Dashboard"
+        component={Dashboard} // Temporary placeholder component
+        options={{
+          drawerIcon: ({ color }) => (
+            <Ionicons name="home-outline" size={22} color={color} />
+          ),
+        }}
+      />
+      <Drawer.Screen
+        name="Profile"
+        component={Profile} // Temporary placeholder component
+        options={{
+          drawerIcon: ({ color }) => (
+            <Ionicons name="person-outline" size={22} color={color} />
+          ),
+        }}
+      />
+      <Drawer.Screen
+        name="Settings"
+        component={Settings} // Temporary placeholder component
+        options={{
+          drawerIcon: ({ color }) => (
+            <Ionicons name="settings-outline" size={22} color={color} />
+          ),
+        }}
+      />
+    </Drawer.Navigator>
   );
 };
 
+// Styles for temporary screens
 const styles = StyleSheet.create({
-  container: {
+  screenContainer: {
     flex: 1,
-    alignItems: "center",
     justifyContent: "center",
+    alignItems: "center",
   },
-  textt: {
-    fontSize: 30,
-    fontWeight: "bold",
+  screenText: {
+    fontSize: 24,
     color: "#9475d6",
-  },
-  logoutButton: {
-    marginTop: 20,
-    paddingVertical: 10,
-    paddingHorizontal: 30,
-    backgroundColor: "#9475d6",
-    borderRadius: 5,
-  },
-  logoutText: {
-    color: "#fff",
-    fontSize: 18,
-    fontWeight: "bold",
   },
 });
 

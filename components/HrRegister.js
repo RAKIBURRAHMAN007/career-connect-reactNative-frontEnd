@@ -12,6 +12,7 @@ import LottieView from "lottie-react-native";
 import anim from "../src/animation/Animation - 1744873309025.json";
 import { auth, AuthContext } from "../Auth/AuthProvider";
 import { sendEmailVerification, updateProfile } from "firebase/auth";
+import UseAxiosPublic from "../hooks/AxiosPublic";
 const HrRegister = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -20,6 +21,7 @@ const HrRegister = () => {
 
   const navigation = useNavigation();
   const { createNewUser, setUser } = useContext(AuthContext);
+  const axiosPublic = UseAxiosPublic();
   const handleRegister = () => {
     const passRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d).{6,}$/;
 
@@ -61,11 +63,20 @@ const HrRegister = () => {
           sendEmailVerification(registeredUser)
             .then(() => {
               // Notify user that they need to verify their email
-              Alert.alert(
-                "Registration Successful",
-                "A verification email has been sent to your email address."
-              );
-              navigation.navigate("hrLogin");
+              const userInfo = {
+                name: name,
+                email: email,
+                role: "hr",
+              };
+              axiosPublic.post("/users", userInfo).then((res) => {
+                if (res.data.insertedId) {
+                  Alert.alert(
+                    "Registration Successful",
+                    "A verification email has been sent to your email address."
+                  );
+                  navigation.navigate("hrLogin");
+                }
+              });
             })
             .catch((error) => {
               Alert.alert(

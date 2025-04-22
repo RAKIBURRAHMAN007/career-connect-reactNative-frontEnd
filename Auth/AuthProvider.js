@@ -1,17 +1,20 @@
 import { Children, createContext, useEffect, useState } from "react";
-
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
   createUserWithEmailAndPassword,
-  getAuth,
   GoogleAuthProvider,
+  initializeAuth,
   onAuthStateChanged,
   signInWithEmailAndPassword,
   signInWithPopup,
   signOut,
+  getReactNativePersistence,
 } from "firebase/auth";
 import app from "./firebase.config";
 export const AuthContext = createContext();
-export const auth = getAuth(app);
+export const auth = initializeAuth(app, {
+  persistence: getReactNativePersistence(AsyncStorage),
+});
 
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
