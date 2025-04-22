@@ -9,6 +9,10 @@ import PostNewJob from "../components/hrMainComponents/PostNewJob";
 import MyPostedJobs from "../components/hrMainComponents/MyPostedJobs";
 import ManagePostedJobs from "../components/hrMainComponents/ManagePostedJobs";
 import JobApplications from "../components/hrMainComponents/JobApplications";
+import AllAvilableJobs from "../components/seekerMainComponents/AllAvilableJobs";
+import MyAppliedJobs from "../components/seekerMainComponents/MyAppliedJobs";
+import RejectedJobs from "../components/seekerMainComponents/RejectedJobs";
+import WhishList from "../components/seekerMainComponents/WhishList";
 
 const Drawer = createDrawerNavigator();
 
@@ -95,6 +99,50 @@ const MainScreenPage = () => {
           options={{
             drawerIcon: ({ color }) => (
               <Ionicons name="document-text-outline" size={22} color={color} />
+            ),
+          }}
+        />
+      )}
+      {loggedUser?.role === "seeker" && (
+        <Drawer.Screen
+          name="All Available Jobs"
+          component={AllAvilableJobs}
+          options={{
+            drawerIcon: ({ color }) => (
+              <Ionicons name="search-outline" size={22} color={color} />
+            ),
+          }}
+        />
+      )}
+      {loggedUser?.role === "seeker" && (
+        <Drawer.Screen
+          name="My Applied Jobs"
+          component={MyAppliedJobs}
+          options={{
+            drawerIcon: ({ color }) => (
+              <Ionicons name="briefcase-outline" size={22} color={color} />
+            ),
+          }}
+        />
+      )}
+      {loggedUser?.role === "seeker" && (
+        <Drawer.Screen
+          name="Rejected Jobs"
+          component={RejectedJobs}
+          options={{
+            drawerIcon: ({ color }) => (
+              <Ionicons name="sad-outline" size={22} color={color} />
+            ),
+          }}
+        />
+      )}
+      {loggedUser?.role === "seeker" && (
+        <Drawer.Screen
+          name="wishList"
+          component={WhishList}
+          options={{
+            drawerIcon: ({ color }) => (
+              <Ionicons name="heart-outline" size={22} color={color} />
             ),
           }}
         />
