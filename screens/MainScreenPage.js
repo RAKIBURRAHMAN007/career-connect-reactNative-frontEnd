@@ -13,6 +13,7 @@ import AllAvilableJobs from "../components/seekerMainComponents/AllAvilableJobs"
 import MyAppliedJobs from "../components/seekerMainComponents/MyAppliedJobs";
 import RejectedJobs from "../components/seekerMainComponents/RejectedJobs";
 import WhishList from "../components/seekerMainComponents/WhishList";
+import HrAnalytics from "../components/hrMainComponents/HrAnalytics ";
 
 const Drawer = createDrawerNavigator();
 
@@ -72,7 +73,7 @@ const MainScreenPage = () => {
       )}
       {loggedUser?.role === "hr" && (
         <Drawer.Screen
-          name="My Posted Job"
+          name="My Posted Jobs"
           component={MyPostedJobs}
           options={{
             drawerIcon: ({ color }) => (
@@ -83,7 +84,7 @@ const MainScreenPage = () => {
       )}
       {loggedUser?.role === "hr" && (
         <Drawer.Screen
-          name="Manage Posted Job"
+          name="Manage Posted Jobs"
           component={ManagePostedJobs}
           options={{
             drawerIcon: ({ color }) => (
@@ -99,6 +100,17 @@ const MainScreenPage = () => {
           options={{
             drawerIcon: ({ color }) => (
               <Ionicons name="document-text-outline" size={22} color={color} />
+            ),
+          }}
+        />
+      )}
+      {loggedUser?.role === "hr" && (
+        <Drawer.Screen
+          name="HR Analytics Overview"
+          component={HrAnalytics}
+          options={{
+            drawerIcon: ({ color }) => (
+              <Ionicons name="bar-chart-outline" size={22} color={color} />
             ),
           }}
         />
