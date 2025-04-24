@@ -10,7 +10,13 @@ import HrRegister from "./components/HrRegister";
 import SeekerRegister from "./components/SeekerRegister";
 import AuthProvider, { AuthContext } from "./Auth/AuthProvider";
 import MainScreenPage from "./screens/MainScreenPage";
-
+import ApiKeyProvider from "./Auth/ApiKeyContext";
+import {
+  QueryClient,
+  QueryClientProvider,
+  useQuery,
+} from "@tanstack/react-query";
+const queryClient = new QueryClient();
 const Stack = createNativeStackNavigator();
 
 const AppContent = () => {
@@ -48,9 +54,13 @@ const AppContent = () => {
 
 export default function App() {
   return (
-    <AuthProvider>
-      <AppContent />
-    </AuthProvider>
+    <QueryClientProvider client={queryClient}>
+      <AuthProvider>
+        <ApiKeyProvider>
+          <AppContent />
+        </ApiKeyProvider>
+      </AuthProvider>
+    </QueryClientProvider>
   );
 }
 

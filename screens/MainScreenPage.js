@@ -6,7 +6,7 @@ import UseAxiosPublic from "../hooks/AxiosPublic";
 import Profile from "../components/Profile";
 import { AuthContext } from "../Auth/AuthProvider";
 import PostNewJob from "../components/hrMainComponents/PostNewJob";
-import MyPostedJobs from "../components/hrMainComponents/MyPostedJobs";
+
 import ManagePostedJobs from "../components/hrMainComponents/ManagePostedJobs";
 import JobApplications from "../components/hrMainComponents/JobApplications";
 import AllAvilableJobs from "../components/seekerMainComponents/AllAvilableJobs";
@@ -71,17 +71,7 @@ const MainScreenPage = () => {
           }}
         />
       )}
-      {loggedUser?.role === "hr" && (
-        <Drawer.Screen
-          name="My Posted Jobs"
-          component={MyPostedJobs}
-          options={{
-            drawerIcon: ({ color }) => (
-              <Ionicons name="briefcase-outline" size={22} color={color} />
-            ),
-          }}
-        />
-      )}
+
       {loggedUser?.role === "hr" && (
         <Drawer.Screen
           name="Manage Posted Jobs"

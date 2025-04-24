@@ -11,6 +11,8 @@ import {
 import * as ImagePicker from "expo-image-picker";
 import UseAxiosPublic from "../../hooks/AxiosPublic";
 import { AuthContext } from "../../Auth/AuthProvider";
+import { ApiKeyContext } from "../../Auth/ApiKeyContext";
+import { useNavigation } from "@react-navigation/native";
 
 const PostNewJob = () => {
   const [jobTitle, setJobTitle] = useState("");
@@ -21,6 +23,7 @@ const PostNewJob = () => {
   const [logo, setLogo] = useState(null);
   const axiosPublic = UseAxiosPublic();
   const { user } = useContext(AuthContext);
+  const navigation = useNavigation();
   const pickLogo = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ["images"],
@@ -33,6 +36,57 @@ const PostNewJob = () => {
     }
   };
 
+  // const handlePostJob = async () => {
+  //   console.log("Job Posted:", {
+  //     jobTitle,
+  //     jobDescription,
+  //     company,
+  //     salary,
+  //     location,
+  //     logo,
+  //   });
+
+  //   const formData = new FormData();
+  //   formData.append("image", {
+  //     uri: logo,
+  //     type: "image/png", // Add MIME type for the image
+  //     name: `logo_${Date.now()}.png`, // Add a name for the image file
+  //   });
+
+  //   try {
+  //     const imgResponse = await axiosPublic.post(imgHostingApi, formData, {
+  //       headers: {
+  //         "Content-Type": "multipart/form-data",
+  //       },
+  //     });
+
+  //     if (imgResponse.data && imgResponse.data.success) {
+  //       const imageUrl = imgResponse.data.data.url;
+  //       const jobData = {
+  //         hrEmail: user.email,
+  //         jobTitle: jobTitle,
+  //         jobDescription: jobDescription,
+  //         company: company,
+  //         salary: salary,
+  //         location: location,
+  //         img: imageUrl,
+  //       };
+  //       axiosPublic.post("/jobs", jobData).then((res) => {
+  //         if (res.data.insertedId) {
+  //           Alert.alert("Success", "Job posted successfully!");
+  //           navigation.reset({
+  //             routes: [{ name: "Post New Job" }],
+  //           });
+  //         }
+  //       });
+  //     } else {
+  //       Alert.alert("Error", "Failed to upload the image.");
+  //     }
+  //   } catch (error) {
+  //     console.error("Error during job post:", error);
+  //     Alert.alert("Error", "An error occurred while posting the job.");
+  //   }
+  // };
   const handlePostJob = async () => {
     console.log("Job Posted:", {
       jobTitle,
@@ -44,21 +98,26 @@ const PostNewJob = () => {
     });
 
     const formData = new FormData();
-    formData.append("image", {
+    formData.append("file", {
       uri: logo,
-      type: "image/jpeg", // Add MIME type for the image
-      name: "logo.jpg", // Add a name for the image file
+      type: "image/png",
+      name: `logo_${Date.now()}.png`,
     });
+    formData.append("upload_preset", "carrierConnect");
 
     try {
-      const imgResponse = await axiosPublic.post(imgHostingApi, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      const response = await fetch(
+        "https://api.cloudinary.com/v1_1/dgmpw9vls/image/upload",
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
 
-      if (imgResponse.data && imgResponse.data.success) {
-        const imageUrl = imgResponse.data.data.display_url;
+      const data = await response.json();
+
+      if (data.secure_url) {
+        const imageUrl = data.secure_url;
         const jobData = {
           hrEmail: user.email,
           jobTitle: jobTitle,
@@ -71,10 +130,13 @@ const PostNewJob = () => {
         axiosPublic.post("/jobs", jobData).then((res) => {
           if (res.data.insertedId) {
             Alert.alert("Success", "Job posted successfully!");
+            navigation.reset({
+              routes: [{ name: "Post New Job" }],
+            });
           }
         });
       } else {
-        Alert.alert("Error", "Failed to upload the image.");
+        Alert.alert("Error", "Failed to upload the image to Cloudinary.");
       }
     } catch (error) {
       console.error("Error during job post:", error);
