@@ -74,15 +74,12 @@ const HrAnalytics = () => {
         width={screenWidth}
         height={220}
         chartConfig={{
-          backgroundColor: "#fff",
-          backgroundGradientFrom: "#fff",
-          backgroundGradientTo: "#fff",
-          color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+          color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`, //dynamic legend color in pie
         }}
-        accessor={"population"}
+        accessor={"population"} //for making pie slide according to value
         backgroundColor={"transparent"}
         paddingLeft={"20"}
-        absolute
+        absolute //show actual value
       />
     </View>
   );
