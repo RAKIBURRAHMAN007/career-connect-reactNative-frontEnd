@@ -33,7 +33,7 @@ const ManagePostedJobs = () => {
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         {jobs.map((job) => (
-          <HrJobCard key={job._id} job={job}></HrJobCard>
+          <HrJobCard key={job._id} job={job} refetch={refetch}></HrJobCard>
         ))}
       </ScrollView>
     </View>
