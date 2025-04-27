@@ -21,6 +21,8 @@ const PostNewJob = () => {
   const [salary, setSalary] = useState("");
   const [location, setLocation] = useState("");
   const [logo, setLogo] = useState(null);
+  const [skills, setSkills] = useState("");
+
   const axiosPublic = UseAxiosPublic();
   const { user } = useContext(AuthContext);
   const navigation = useNavigation();
@@ -126,6 +128,7 @@ const PostNewJob = () => {
           salary: salary,
           location: location,
           img: imageUrl,
+          skills: skills.split(",").map((skill) => skill.trim()),
         };
         axiosPublic.post("/jobs", jobData).then((res) => {
           if (res.data.insertedId) {
@@ -146,8 +149,6 @@ const PostNewJob = () => {
 
   return (
     <View style={styles.screenContainer}>
-      <Text style={styles.screenText}>Post a New Job</Text>
-
       <TextInput
         style={styles.inputField}
         placeholder="Job Title"
@@ -161,6 +162,13 @@ const PostNewJob = () => {
         onChangeText={setJobDescription}
         multiline
       />
+      <TextInput
+        style={styles.inputField}
+        placeholder="Skills (comma separated)"
+        value={skills}
+        onChangeText={setSkills}
+      />
+
       <TextInput
         style={styles.inputField}
         placeholder="Company Name"
@@ -230,7 +238,7 @@ const styles = StyleSheet.create({
   },
   logoPreview: {
     width: 100,
-    height: 100,
+    height: 60,
     resizeMode: "contain",
     marginVertical: 10,
     alignSelf: "center",

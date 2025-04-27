@@ -23,6 +23,7 @@ const HrJobCard = ({ job, refetch }) => {
     salary,
     location,
     img,
+    skills,
   } = job;
 
   const [modalVisible, setModalVisible] = useState(false);
@@ -31,6 +32,9 @@ const HrJobCard = ({ job, refetch }) => {
   const [updatedCompany, setUpdatedCompany] = useState(company);
   const [updatedDescription, setUpdatedDescription] = useState(jobDescription);
   const [updatedLocation, setUpdatedLocation] = useState(location);
+  const [updatedSkills, setUpdatedSkills] = useState(
+    skills ? skills.join(", ") : ""
+  );
 
   const handleDelete = () => {
     axiosPublic.delete(`/deleteJob/${_id}`).then((res) => {
@@ -49,6 +53,7 @@ const HrJobCard = ({ job, refetch }) => {
       jobDescription: updatedDescription,
       location: updatedLocation,
       hrEmail: hrEmail,
+      skills: updatedSkills.split(",").map((skill) => skill.trim()),
     };
 
     axiosPublic.patch(`/updateJob/${_id}`, updatedData).then((res) => {
@@ -72,6 +77,18 @@ const HrJobCard = ({ job, refetch }) => {
         <Text style={styles.jobDescription}>Description: {jobDescription}</Text>
         <Text style={styles.salary}>Salary: {salary}</Text>
         <Text style={styles.location}>Location: {location}</Text>
+        {skills && (
+          <View style={{ marginBottom: 12 }}>
+            <Text style={styles.skillsTitle}>Skills:</Text>
+            <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 5 }}>
+              {skills.map((skill, index) => (
+                <View key={index} style={styles.skillBadge}>
+                  <Text style={styles.skillText}>{skill}</Text>
+                </View>
+              ))}
+            </View>
+          </View>
+        )}
 
         <View style={styles.buttonContainer}>
           <TouchableOpacity
@@ -125,6 +142,15 @@ const HrJobCard = ({ job, refetch }) => {
                 onChangeText={setUpdatedDescription}
                 placeholder="Enter job description"
                 multiline
+              />
+            </View>
+            <View style={styles.inputGroup}>
+              <Text style={styles.inputLabel}>Skills (comma separated)</Text>
+              <TextInput
+                style={styles.input}
+                value={updatedSkills}
+                onChangeText={setUpdatedSkills}
+                placeholder="e.g. React, Node.js, MongoDB"
               />
             </View>
 
