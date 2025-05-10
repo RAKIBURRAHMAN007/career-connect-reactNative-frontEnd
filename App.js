@@ -10,12 +10,13 @@ import HrRegister from "./components/HrRegister";
 import SeekerRegister from "./components/SeekerRegister";
 import AuthProvider, { AuthContext } from "./Auth/AuthProvider";
 import MainScreenPage from "./screens/MainScreenPage";
-import ApiKeyProvider from "./Auth/ApiKeyContext";
+
 import {
   QueryClient,
   QueryClientProvider,
   useQuery,
 } from "@tanstack/react-query";
+import JobDetails from "./components/seekerMainComponents/JobDetails";
 const queryClient = new QueryClient();
 const Stack = createNativeStackNavigator();
 
@@ -40,6 +41,11 @@ const AppContent = () => {
         <Stack.Screen name="seekerLogin" component={SeekerLogin}></Stack.Screen>
         <Stack.Screen name="hrRegister" component={HrRegister}></Stack.Screen>
         <Stack.Screen
+          name="JobDetails"
+          options={{ headerShown: true, title: "Job Details" }}
+          component={JobDetails}
+        ></Stack.Screen>
+        <Stack.Screen
           name="seekerRegister"
           component={SeekerRegister}
         ></Stack.Screen>
@@ -56,9 +62,7 @@ export default function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
-        <ApiKeyProvider>
-          <AppContent />
-        </ApiKeyProvider>
+        <AppContent />
       </AuthProvider>
     </QueryClientProvider>
   );

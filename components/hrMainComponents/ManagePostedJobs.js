@@ -11,6 +11,7 @@ import UseAxiosPublic from "../../hooks/AxiosPublic";
 import { useContext } from "react";
 import { AuthContext } from "../../Auth/AuthProvider";
 import HrJobCard from "./HrJobCard";
+import { FlatList } from "react-native";
 
 const ManagePostedJobs = () => {
   const axiosPublic = UseAxiosPublic();
@@ -31,11 +32,14 @@ const ManagePostedJobs = () => {
 
   return (
     <View style={styles.container}>
-      <ScrollView contentContainerStyle={styles.scrollContainer}>
-        {jobs.map((job) => (
-          <HrJobCard key={job._id} job={job} refetch={refetch}></HrJobCard>
-        ))}
-      </ScrollView>
+      <FlatList
+        data={jobs} // Set the jobs array as the data prop
+        contentContainerStyle={styles.scrollContainer}
+        keyExtractor={(item) => item._id.toString()} // Use _id as key for each item
+        renderItem={({ item }) => (
+          <HrJobCard key={item._id} job={item} refetch={refetch} />
+        )}
+      />
     </View>
   );
 };
@@ -47,28 +51,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: 5,
     backgroundColor: "#fff",
   },
-  title: {
-    fontSize: 24,
-    fontWeight: "bold",
-    color: "#9475d6",
-    marginBottom: 20,
-  },
+
   scrollContainer: {
     paddingBottom: 100,
     paddingHorizontal: 10,
-  },
-  jobCard: {
-    backgroundColor: "#f2f2f2",
-    padding: 16,
-    borderRadius: 10,
-    marginBottom: 15,
-    elevation: 3,
-  },
-  jobTitle: {
-    fontSize: 18,
-    fontWeight: "bold",
-    marginBottom: 6,
-    color: "#444",
   },
 });
 

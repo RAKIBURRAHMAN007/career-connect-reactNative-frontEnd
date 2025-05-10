@@ -3,6 +3,11 @@
     "name": "carrier-connect-frontEnd",
     "slug": "carrier-connect-frontEnd",
     "version": "1.0.0",
-    "newArchEnabled": true
+    "newArchEnabled": true,
+    "extra": {
+      "eas": {
+        "projectId": "b1ae9e20-b851-4cf2-9873-a03af46f680f"
+      }
+    }
   }
 }

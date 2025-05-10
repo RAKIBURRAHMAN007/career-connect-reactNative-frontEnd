@@ -11,7 +11,7 @@ import {
 import * as ImagePicker from "expo-image-picker";
 import UseAxiosPublic from "../../hooks/AxiosPublic";
 import { AuthContext } from "../../Auth/AuthProvider";
-import { ApiKeyContext } from "../../Auth/ApiKeyContext";
+
 import { useNavigation } from "@react-navigation/native";
 
 const PostNewJob = () => {
